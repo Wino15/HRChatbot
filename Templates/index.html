@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wino Interface</title>
+</head>
+<body>
+    <h1>ChatBot Interface</h1>
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+    <div id="chatLog"></div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            fetch("/get", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ msg: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatLog = document.getElementById("chatLog");
+                const newMessage = document.createElement("p");
+                newMessage.textContent = "Bot: " + data.response;
+                chatLog.appendChild(newMessage);
+            });
+        }
+    </script>
+</body>
+</html>
